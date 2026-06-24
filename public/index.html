@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GulaTrack - Gula Darah Tracker</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <section id="authPage" class="auth-page">
+    <div class="auth-left">
+      <div class="brand large-brand">
+        <div class="brand-icon">⌁</div>
+        <div>
+          <h1>GulaTrack</h1>
+          <p>Gula Darah Tracker</p>
+        </div>
+      </div>
+      <h2>Pantau gula darah, makanan, dan kebiasaan sehat dalam satu tempat.</h2>
+      <p>Setiap akun punya data masing-masing. Login dengan akun yang sama untuk melihat catatan yang pernah disimpan.</p>
+      <div class="auth-feature-grid">
+        <span>🔐 Data per akun</span>
+        <span>📈 Grafik gula darah</span>
+        <span>🍽️ Analisis makanan</span>
+        <span>🔔 Pengingat sehat</span>
+      </div>
+    </div>
+
+    <div class="auth-card">
+      <div class="auth-tabs">
+        <button id="loginTab" class="active" type="button">Login</button>
+        <button id="registerTab" type="button">Register</button>
+      </div>
+
+      <form id="loginForm" class="auth-form">
+        <h3>Masuk Akun</h3>
+        <label>Email
+          <input type="email" id="loginEmail" placeholder="contoh@email.com" required />
+        </label>
+        <label>Password
+          <input type="password" id="loginPassword" placeholder="Minimal 6 karakter" required />
+        </label>
+        <button class="primary-btn full-btn" type="submit">Login</button>
+        <p class="helper-text">Belum punya akun? Klik tab Register.</p>
+      </form>
+
+      <form id="registerForm" class="auth-form hidden">
+        <h3>Buat Akun Baru</h3>
+        <label>Nama Lengkap
+          <input type="text" id="registerName" placeholder="Nama kamu" required />
+        </label>
+        <label>Email
+          <input type="email" id="registerEmail" placeholder="contoh@email.com" required />
+        </label>
+        <label>No. HP <span class="muted">opsional</span>
+          <input type="text" id="registerPhone" placeholder="+62..." />
+        </label>
+        <label>Password
+          <input type="password" id="registerPassword" placeholder="Minimal 6 karakter" required />
+        </label>
+        <button class="primary-btn full-btn" type="submit">Daftar & Masuk</button>
+      </form>
+    </div>
+  </section>
+
+  <div id="appShell" class="app-shell hidden">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">⌁</div>
+        <div>
+          <h1>GulaTrack</h1>
+          <p>Gula Darah Tracker</p>
+        </div>
+      </div>
+
+      <nav class="nav-menu">
+        <button class="nav-item active" data-page="dashboard">🏠 Beranda</button>
+        <button class="nav-item" data-page="add">➕ Tambah Catatan</button>
+        <button class="nav-item" data-page="food">🍽️ Analisis Makanan</button>
+        <button class="nav-item" data-page="history">📋 Riwayat</button>
+        <button class="nav-item" data-page="chart">📈 Grafik</button>
+        <button class="nav-item" data-page="reminder">🔔 Pengingat</button>
+        <button class="nav-item" data-page="profile">👤 Profil</button>
+      </nav>
+
+      <div class="sidebar-card">
+        <p class="small-label">Akun aktif</p>
+        <strong id="sideName">-</strong>
+        <span id="sideEmail">-</span>
+        <button id="logoutBtn" class="logout-btn" type="button">Logout</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Aplikasi Pemantau Gula Darah</p>
+          <h2 id="pageTitle">Beranda</h2>
+        </div>
+        <div class="profile-mini">
+          <div class="avatar" id="miniAvatar">GT</div>
+          <div>
+            <strong id="miniName">-</strong>
+            <p>Pasien aktif</p>
+          </div>
+        </div>
+      </header>
+
+      <section id="dashboard" class="page active-page">
+        <div class="hero-card">
+          <div>
+            <p class="eyebrow">Halo, <span id="welcomeName">selamat datang</span> 👋</p>
+            <h3>Pantau gula darah harianmu dengan lebih rapi.</h3>
+            <p>Data catatan akan tersimpan sesuai akun. Jika login dengan akun berbeda, data yang tampil juga berbeda.</p>
+          </div>
+          <button class="primary-btn" data-open="add">Tambah Catatan</button>
+        </div>
+
+        <div class="stats-grid">
+          <article class="stat-card highlight"><span>Terakhir</span><h3 id="latestValue">-</h3><p id="latestMeta">Belum ada catatan</p></article>
+          <article class="stat-card"><span>Rata-rata</span><h3 id="avgValue">0</h3><p>mg/dL</p></article>
+          <article class="stat-card"><span>Tertinggi</span><h3 id="highestValue">0</h3><p>mg/dL</p></article>
+          <article class="stat-card"><span>Terendah</span><h3 id="lowestValue">0</h3><p>mg/dL</p></article>
+        </div>
+
+        <div class="content-grid">
+          <section class="panel">
+            <div class="panel-header">
+              <h3>Catatan Terbaru</h3>
+              <button class="text-btn" data-open="history">Lihat semua</button>
+            </div>
+            <div id="recentList" class="reading-list empty-list">Belum ada catatan.</div>
+          </section>
+
+          <section class="panel soft-panel">
+            <h3>Ringkasan Status</h3>
+            <div class="status-row"><span>Normal</span><strong id="normalCount">0</strong></div>
+            <div class="status-row"><span>Tinggi</span><strong id="highCount">0</strong></div>
+            <div class="status-row"><span>Rendah</span><strong id="lowCount">0</strong></div>
+            <div class="emergency-box">⚠️ Aplikasi ini hanya prototype pencatatan. Keputusan medis tetap konsultasi ke tenaga kesehatan.</div>
+          </section>
+        </div>
+      </section>
+
+      <section id="add" class="page">
+        <div class="form-card">
+          <h3>Tambah Catatan Gula Darah</h3>
+          <form id="readingForm">
+            <div class="form-grid">
+              <label>Nilai Gula Darah (mg/dL)<input type="number" id="value" placeholder="Contoh: 128" required /></label>
+              <label>Tanggal<input type="date" id="date" required /></label>
+              <label>Waktu<input type="time" id="time" required /></label>
+              <label>Konteks
+                <select id="context" required>
+                  <option value="Puasa">Puasa</option>
+                  <option value="Sebelum Makan">Sebelum Makan</option>
+                  <option value="Sesudah Makan">Sesudah Makan</option>
+                  <option value="Sebelum Tidur">Sebelum Tidur</option>
+                </select>
+              </label>
+            </div>
+            <label>Catatan Opsional<textarea id="note" rows="5" placeholder="Contoh: 2 jam setelah makan nasi putih dan teh manis."></textarea></label>
+            <button class="primary-btn full-btn" type="submit">Simpan Catatan</button>
+          </form>
+        </div>
+      </section>
+
+      <section id="food" class="page">
+        <div class="content-grid wide-left">
+          <section class="form-card">
+            <h3>Analisis Makanan</h3>
+            <p class="muted">Masukkan makanan yang dimakan. Sistem akan memperkirakan dampak terhadap gula berdasarkan karbohidrat dan indeks glikemik.</p>
+            <form id="foodForm">
+              <div class="form-grid">
+                <label>Tanggal<input type="date" id="foodDate" required /></label>
+                <label>Waktu<input type="time" id="foodTime" required /></label>
+              </div>
+
+              <div class="food-input-row">
+                <label>Nama Makanan
+                  <input type="text" id="foodName" list="foodOptions" placeholder="Contoh: nasi putih" />
+                  <datalist id="foodOptions"></datalist>
+                </label>
+                <label>Porsi
+                  <input type="number" id="foodPortion" min="0.1" step="0.1" value="1" />
+                </label>
+                <label>Karbo/porsi <span class="muted">opsional</span>
+                  <input type="number" id="foodCarbs" placeholder="gram" />
+                </label>
+                <button class="outline-btn add-food-btn" id="addFoodItem" type="button">Tambah</button>
+              </div>
+
+              <div id="selectedFoods" class="selected-foods empty-list">Belum ada makanan dipilih.</div>
+
+              <label>Catatan Makanan<textarea id="foodNote" rows="4" placeholder="Contoh: makan siang, porsi agak banyak."></textarea></label>
+              <button class="primary-btn full-btn" type="submit">Analisis & Simpan</button>
+            </form>
+          </section>
+
+          <section class="panel soft-panel">
+            <h3>Hasil Analisis Terbaru</h3>
+            <div id="foodResult" class="food-result empty-list">Belum ada analisis.</div>
+          </section>
+        </div>
+
+        <section class="panel top-space">
+          <div class="panel-header">
+            <h3>Riwayat Analisis Makanan</h3>
+            <span class="badge">Data akun ini saja</span>
+          </div>
+          <div id="foodLogList" class="food-log-list empty-list">Belum ada riwayat makanan.</div>
+        </section>
+      </section>
+
+      <section id="history" class="page">
+        <div class="panel">
+          <div class="panel-header split-header">
+            <div><h3>Riwayat Lengkap</h3><p>Lihat, filter, dan hapus catatan gula darah.</p></div>
+            <div class="filter-row">
+              <input type="search" id="searchInput" placeholder="Cari konteks/status..." />
+              <select id="statusFilter">
+                <option value="all">Semua Status</option>
+                <option value="Normal">Normal</option>
+                <option value="Tinggi">Tinggi</option>
+                <option value="Rendah">Rendah</option>
+              </select>
+            </div>
+          </div>
+          <div id="historyList" class="reading-list"></div>
+        </div>
+      </section>
+
+      <section id="chart" class="page">
+        <div class="panel">
+          <div class="panel-header"><h3>Grafik & Tren</h3><span class="badge">7 catatan terbaru</span></div>
+          <canvas id="glucoseChart" width="900" height="360"></canvas>
+          <div class="insight-card" id="insightText">Tambahkan beberapa catatan untuk melihat pola gula darah.</div>
+        </div>
+      </section>
+
+      <section id="reminder" class="page">
+        <div class="panel">
+          <div class="panel-header"><h3>Pengingat</h3><span class="badge">Toggle aktif/nonaktif</span></div>
+          <div id="reminderList" class="reminder-list"></div>
+        </div>
+      </section>
+
+      <section id="profile" class="page">
+        <div class="content-grid">
+          <section class="profile-card">
+            <div class="profile-cover">
+              <div class="avatar big" id="profileAvatar">GT</div>
+              <div>
+                <h3 id="profileName">-</h3>
+                <p id="profileEmail">-</p>
+                <p id="profilePhone">-</p>
+              </div>
+            </div>
+            <form id="profileForm" class="profile-form">
+              <h4>Edit Profil & Target</h4>
+              <label>Nama<input type="text" id="editName" required /></label>
+              <label>No. HP<input type="text" id="editPhone" /></label>
+              <div class="form-grid">
+                <label>Puasa Min<input type="number" id="targetBeforeMin" /></label>
+                <label>Puasa Max<input type="number" id="targetBeforeMax" /></label>
+                <label>Sesudah Makan Max<input type="number" id="targetAfterMax" /></label>
+              </div>
+              <button class="primary-btn full-btn" type="submit">Simpan Profil</button>
+            </form>
+          </section>
+
+          <section class="panel">
+            <h3>Laporan & Ekspor</h3>
+            <button class="outline-btn" id="downloadReport">⬇️ Unduh Laporan TXT</button>
+            <button class="outline-btn" id="copyReport">🔗 Salin Ringkasan</button>
+            <div class="target-box">
+              <h4>Target Rentang</h4>
+              <p>Puasa / Sebelum Makan: <strong id="targetBefore">80 - 130 mg/dL</strong></p>
+              <p>Sesudah Makan: <strong id="targetAfter">&lt; 180 mg/dL</strong></p>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>
